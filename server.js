@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 const mysql = require('mysql2')
-=======
 const express = require('express');
 const mysql = require('mysql2');
->>>>>>> 451aa7246901dc08ea38e69cd83cd5d3a7f32763
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
@@ -109,10 +107,5 @@ app.get('/api/posts/:id', (req, res) => {
 //   });
 
 app.listen(port, () => {
-<<<<<<< HEAD
     console.log(`Server is running on port ${port}`)
 })
-=======
-    console.log(`Server is running on port ${port}`);
-});
->>>>>>> 451aa7246901dc08ea38e69cd83cd5d3a7f32763
