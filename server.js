@@ -1,11 +1,9 @@
 const mysql = require('mysql2')
 const express = require('express');
-const mysql = require('mysql2');
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
-const express = require('express');
 
 app = express();
 app.use(express.json());
