@@ -9,10 +9,13 @@ app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:3000' // Allow requests from this origin
+}));
 
 app.use(session({
-  secret: 'my_super_secret_key_1234567890', // Replace with your secure secret key
+  secret: '1j2^34567890', // Replace with your secure secret key
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }  // Set true if using HTTPS
@@ -87,9 +90,9 @@ app.post('/login', (req, res) => {
       if (results.length > 0) {
           // User found, store their info in the session
           req.session.user = results[0];
-          res.send({ message: 'Login successful!' });
+          res.json({ message: 'Login successful!' });
       } else {
-          res.status(401).send({ message: 'Invalid username or password' });
+          res.status(401).json({ message: 'Invalid username or password' });
       }
   });
 });
@@ -99,19 +102,19 @@ function isAuthenticated(req, res, next) {
   if (req.session.user) {
       next();
   } else {
-      res.status(403).send({ message: 'You need to log in first' });
+      res.status(403).json({ message: 'You need to log in first' });
   }
 }
 
 // Endpoint to fetch posts for the logged-in user
-app.get('/user-posts', isAuthenticated, (req, res) => {
+app.get('/usep', isAuthenticated, (req, res) => {
   const userId = req.session.user.id;
 
   const query = 'SELECT * FROM posts WHERE user_id = ?';
   db.query(query, [userId], (err, results) => {
       if (err) throw err;
 
-      res.send(results);
+      res.json(results);
   });
 });
 
@@ -157,4 +160,4 @@ app.get('/api/posts/:id', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
-})
+});
