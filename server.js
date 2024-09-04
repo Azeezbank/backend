@@ -48,8 +48,8 @@ app.post('/api/posts', (req, res) => {
   });
 
   app.get('/api/postss/:user_id', (req, res) => {
-    const sql = `SELECT * posts WHERE user_id = ?`;
-    const postId = re.params.user_id;
+    const sql = `SELECT * FROM posts WHERE user_id = ?`;
+    const postId = req.params.user_id;
     db.query(sql, [postId], (err, results) => {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -57,7 +57,7 @@ app.post('/api/posts', (req, res) => {
       if (results.length === 0) {
         return res.status(404).json({ error: 'Post not found' });
       }
-      res.json(results[0]);
+      res.json(results);
     })
 
   })
