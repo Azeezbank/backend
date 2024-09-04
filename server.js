@@ -47,7 +47,7 @@ app.post('/api/posts', (req, res) => {
     });
   });
 
-  app.get('/api/posts/:user_id', (req, res) => {
+  app.get('/api/postss/:user_id', (req, res) => {
     const sql = `SELECT * posts WHERE user_id = ?`;
     const postId = re.params.user_id;
     db.query(sql, [postId], (err, results) => {
