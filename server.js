@@ -1,6 +1,5 @@
 const mysql = require('mysql2')
 const express = require('express');
-const session = require('express-session');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 //const bcrypt = require('bcryptjs');
@@ -8,18 +7,7 @@ const bodyParser = require('body-parser');
 app = express();
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(cors({
-  origin: 'http://localhost:3000' // Allow requests from this origin
-}));
-
-app.use(session({
-  secret: '1j2^34567890', // Replace with your secure secret key
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }  // Set true if using HTTPS
-}));
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
@@ -59,65 +47,20 @@ app.post('/api/posts', (req, res) => {
     });
   });
 
-  // app.post('/login', (req, res) => {
-  //   const { username, password } = req.body;
-
-  //   db.query(`SELECT * FROM users WHERE username = ?`, [username], (err, result) => {
-  //     if (err) return res.status(500).send(err);
-  //     if (result.length === 0) return res.status(400).send('user not found');
-
-  //     const user = result[0];
-  //     const validPassword = bcrypt.compareSync(password, user.password);
-  //     if (!validPassword) return res.status(400).send('invalid password');
- 
-  //     // fetch specific user post
-  //     db.query(`SELECT * FROM posts WHERE user_id = ?`, [user_id], (err, posts) => {
-  //       if (err) return res.status(500).send(err);
-  //       res.json(posts);
-  //     });
-  //   });
-  // });
-
-// Login endpoint
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // Query the database to find the user
-  const query = 'SELECT * FROM users WHERE username = ? AND password = ?';
-  db.query(query, [username, password], (err, results) => {
-      if (err) throw err;
-
-      if (results.length > 0) {
-          // User found, store their info in the session
-          req.session.user = results[0];
-          res.json({ message: 'Login successful!' });
-      } else {
-          res.status(401).json({ message: 'Invalid username or password' });
+  app.get('/api/posts/:user_id', (req, res) => {
+    const sql = `SELECT * posts WHERE user_id = ?`;
+    const postId = re.params.user_id;
+    db.query(sql, [postId], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
       }
-  });
-});
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+      res.json(results[0]);
+    })
 
-// Middleware to check if the user is authenticated
-function isAuthenticated(req, res, next) {
-  if (req.session.user) {
-      next();
-  } else {
-      res.status(403).json({ message: 'You need to log in first' });
-  }
-}
-
-// Endpoint to fetch posts for the logged-in user
-app.get('/usep', isAuthenticated, (req, res) => {
-  const userId = req.session.user.id;
-
-  const query = 'SELECT * FROM posts WHERE user_id = ?';
-  db.query(query, [userId], (err, results) => {
-      if (err) throw err;
-
-      res.json(results);
-  });
-});
-
+  })
 
 
 
