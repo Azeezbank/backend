@@ -92,7 +92,21 @@ app.get('/api/posts/:id', (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    res.json(results[0]);
+    res.json(results);
+  });
+});
+
+
+app.put('api/update/:id', (req, res) => {
+  const postId = req.params.id;
+  const { title, author_name, content, user_id, email } = req.body;
+  const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ? WHERE id = ?`;
+  db.query(sql, [title, author_name, content, user_id, email, postId], (err, result) => {
+    if (err) {
+      console.error('Error updating post:', err);
+      return res.status(500).json('Error updating the post');
+    }
+    res.status(200).json('Post updated successfully');
   });
 });
 
