@@ -24,6 +24,14 @@ db.connect((err) => {
 });
 
 
+
+// const sql = `ALTER TABLE posts ADD COLUMN email VARCHAR(255)`;
+// db.query(sql, (err, result) => {
+//   if (err) {
+//     console.log('error')
+//   }
+//   console.log('table created')
+// })
 app.post('/api/register', (req, res) => {
     const { username, gmail, password } = req.body;
 
@@ -35,11 +43,11 @@ app.post('/api/register', (req, res) => {
 });
 
 app.post('/api/posts', (req, res) => {
-    const { title, author_name, content, user_id } = req.body;
+    const { title, author_name, content, user_id, email } = req.body;
   
-     const query = 'INSERT INTO posts(title, author_name, content, user_id) VALUES (?, ?, ?, ?)';
+     const query = 'INSERT INTO posts(title, author_name, content, user_id, email) VALUES (?, ?, ?, ?, ?)';
   
-    db.query(query, [title, author_name, content, user_id ], (err, result) => {
+    db.query(query, [title, author_name, content, user_id, email ], (err, result) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
@@ -48,8 +56,8 @@ app.post('/api/posts', (req, res) => {
   });
 
   app.get('/api/postss/:user_id', (req, res) => {
-    const sql = `SELECT * posts WHERE user_id = ?`;
-    const postId = re.params.user_id;
+    const sql = `SELECT * FROM posts WHERE user_id = ?`;
+    const postId = req.params.user_id;
     db.query(sql, [postId], (err, results) => {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -57,7 +65,7 @@ app.post('/api/posts', (req, res) => {
       if (results.length === 0) {
         return res.status(404).json({ error: 'Post not found' });
       }
-      res.json(results[0]);
+      res.json(results);
     })
 
   })
@@ -87,19 +95,22 @@ app.get('/api/posts/:id', (req, res) => {
     res.json(results[0]);
   });
 });
-//   const sql = `CREATE TABLE posts (
-//     id INT AUTO_INCREMENT PRIMARY KEY,
-//     title VARCHAR(255) NOT NULL,
-//     author_name VARCHAR(255) NOT NULL,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-//     content TEXT NOT NULL,
-//     user_id INT,
-//     FOREIGN KEY (user_id) REFERENCES users(id)
-//   )`;
-//   db.query(sql, (err, result) => {
-//     if (err) throw err;
-//     console.log('table created')
-//   });
+
+  // const sql = `CREATE TABLE posts (
+  //   id INT AUTO_INCREMENT PRIMARY KEY,
+  //   title VARCHAR(255) NOT NULL,
+  //   author_name VARCHAR(255) NOT NULL,
+  //   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  //   content TEXT NOT NULL,
+  //   user_id INT,
+  //   FOREIGN KEY (user_id) REFERENCES users(id)
+  // )`;
+  // db.query(sql, (err, result) => {
+  //   if (err) throw err;
+  //   console.log('table created')
+  // });
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
