@@ -92,7 +92,7 @@ app.get('/api/posts/:id', (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    res.json(results);
+    res.json(results[0]);
   });
 });
 
