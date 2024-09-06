@@ -97,7 +97,7 @@ app.get('/api/posts/:id', (req, res) => {
 });
 
 
-app.put('api/update/:id', (req, res) => {
+app.put('api/posts/:id', (req, res) => {
   const postId = req.params.id;
   const { title, author_name, content, user_id, email } = req.body;
   const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ? WHERE id = ?`;
