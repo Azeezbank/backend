@@ -99,11 +99,12 @@ app.get('/api/posts/:id', (req, res) => {
 });
 
 
-app.put('api/posts/:id', (req, res) => {
+
+app.put('/api/edit/:id', (req, res) => {
   const postId = req.params.id;
   const { title, author_name, content, user_id, email, category } = req.body;
   const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ?, category = ? WHERE id = ?`;
-  db.query(sql, [title, author_name, content, user_id, email, category, postId], (err, result) => {
+  db.query(sql, [ title, author_name, content, user_id, email, category, postId ], (err, result) => {
     if (err) {
       console.error('Error updating post:', err);
       return res.status(500).json('Error updating the post');
