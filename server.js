@@ -25,13 +25,15 @@ db.connect((err) => {
 
 
 
-// const sql = `ALTER TABLE posts ADD COLUMN email VARCHAR(255)`;
+// const sql = `ALTER TABLE posts ADD COLUMN category VARCHAR(255)`;
 // db.query(sql, (err, result) => {
 //   if (err) {
 //     console.log('error')
 //   }
 //   console.log('table created')
 // })
+
+
 app.post('/api/register', (req, res) => {
     const { username, gmail, password } = req.body;
 
@@ -43,11 +45,11 @@ app.post('/api/register', (req, res) => {
 });
 
 app.post('/api/posts', (req, res) => {
-    const { title, author_name, content, user_id, email } = req.body;
+    const { title, author_name, content, user_id, email, category } = req.body;
   
-     const query = 'INSERT INTO posts(title, author_name, content, user_id, email) VALUES (?, ?, ?, ?, ?)';
+     const query = 'INSERT INTO posts(title, author_name, content, user_id, email, category) VALUES (?, ?, ?, ?, ?, ?)';
   
-    db.query(query, [title, author_name, content, user_id, email ], (err, result) => {
+    db.query(query, [title, author_name, content, user_id, email, category ], (err, result) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
@@ -92,16 +94,16 @@ app.get('/api/posts/:id', (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    res.json(results);
+    res.json(results[0]);
   });
 });
 
 
-app.put('api/update/:id', (req, res) => {
+app.put('api/posts/:id', (req, res) => {
   const postId = req.params.id;
-  const { title, author_name, content, user_id, email } = req.body;
-  const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ? WHERE id = ?`;
-  db.query(sql, [title, author_name, content, user_id, email, postId], (err, result) => {
+  const { title, author_name, content, user_id, email, category } = req.body;
+  const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ?, category = ? WHERE id = ?`;
+  db.query(sql, [title, author_name, content, user_id, email, category, postId], (err, result) => {
     if (err) {
       console.error('Error updating post:', err);
       return res.status(500).json('Error updating the post');
