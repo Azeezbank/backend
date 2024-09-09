@@ -119,7 +119,7 @@ app.delete('/api/delete/:id', (req, res) => {
 
   const query = 'DELETE FROM posts WHERE id = ?';
 
-  connection.query(query, [postId], (err, results) => {
+  db.query(query, [postId], (err, results) => {
     if (err) {
       console.error('Error deleting post:', err);
       return res.status(500).json({ message: 'Server error', error: err.message });
