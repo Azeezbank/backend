@@ -112,6 +112,27 @@ app.put('api/posts/:id', (req, res) => {
   });
 });
 
+
+// Delete a post by ID
+app.delete('/api/delete/:id', (req, res) => {
+  const postId = req.params.id;
+
+  const query = 'DELETE FROM posts WHERE id = ?';
+
+  connection.query(query, [postId], (err, results) => {
+    if (err) {
+      console.error('Error deleting post:', err);
+      return res.status(500).json({ message: 'Server error', error: err.message });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    res.status(200).json({ message: 'Post deleted successfully' });
+  });
+});
+
   // const sql = `CREATE TABLE posts (
   //   id INT AUTO_INCREMENT PRIMARY KEY,
   //   title VARCHAR(255) NOT NULL,
