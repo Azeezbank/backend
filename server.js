@@ -116,47 +116,21 @@ app.get('/api/recipes', (req, res) => {
   });
 });
 
-app.get('/api/restaurant', (req, res) => {
-  const category = 'Restaurant Reviews';
-  const sql = 'SELECT * FROM posts WHERE category = ?';
-
-  db.query(sql, [category], (err, result) => {
-    if (err) {
-      console.error('Error fetching posts:', err);
-      return res.status(500).json({ error: 'Server error' });
-    }
-    console.log('Posts selected successfully');
-    res.json(result);
-  });
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    const sql = `SELECT username FROM users WHERE username = ? and password = ?`;
+    db.query(sql, [username, password], (err, result) => {
+        if (err) throw err;
+        if (result.length === 0) {
+            return res.status(400).json({error: "Invalid username or password"});
+        }
+        res.json({message: "Login successful", username: result[0].username});
+    });
 });
 
-app.get('/api/health', (req, res) => {
-  const category = 'Healthy Eating';  // This can be dynamic if needed
-  const sql = 'SELECT * FROM posts WHERE category = ?';
 
-  db.query(sql, [category], (err, result) => {
-    if (err) {
-      console.error('Error fetching posts:', err);
-      return res.status(500).json({ error: 'Server error' });
-    }
-    console.log('Posts selected successfully');
-    res.json(result);
-  });
-});
 
-app.get('/api/food', (req, res) => {
-  const category = 'Food Trends & News';  // This can be dynamic if needed
-  const sql = 'SELECT * FROM posts WHERE category = ?';
 
-  db.query(sql, [category], (err, result) => {
-    if (err) {
-      console.error('Error fetching posts:', err);
-      return res.status(500).json({ error: 'Server error' });
-    }
-    console.log('Posts selected successfully');
-    res.json(result);
-  });
-});
 
 
 app.put('/api/edit/:id', (req, res) => {
