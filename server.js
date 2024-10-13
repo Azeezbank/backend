@@ -52,7 +52,7 @@ app.post('/api/register', (req, res) => {
 app.post('/api/posts', (req, res) => {
     const { title, author_name, content, user_id, email, category, image } = req.body;
   
-     const query = 'INSERT INTO posts(title, author_name, content, user_id, email, category, image) VALUES (?, ?, ?, ?, ?, ?)';
+     const query = 'INSERT INTO posts(title, author_name, content, user_id, email, category, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
   
     db.query(query, [title, author_name, content, user_id, email, category, image ], (err, result) => {
       if (err) {
