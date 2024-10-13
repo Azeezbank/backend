@@ -29,14 +29,14 @@ db.connect((err) => {
 
 
 
-const sql = `ALTER TABLE posts MODIFY image VARCHAR(500)`;
-db.query(sql, (err, result) => {
-  if (err) {
-    console.error('error', err);
-    return;
-  }
-  console.log('table created')
-})
+// const sql = `ALTER TABLE posts MODIFY image VARCHAR(500)`;
+// db.query(sql, (err, result) => {
+//   if (err) {
+//     console.error('error', err);
+//     return;
+//   }
+//   console.log('table created')
+// })
 
 
 app.post('/api/register', (req, res) => {
@@ -137,9 +137,9 @@ app.post('/api/login', (req, res) => {
 
 app.put('/api/edit/:id', (req, res) => {
   const postId = req.params.id;
-  const { title, author_name, content, user_id, email, category } = req.body;
-  const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ?, category = ? WHERE id = ?`;
-  db.query(sql, [ title, author_name, content, user_id, email, category, postId ], (err, result) => {
+  const { title, author_name, content, user_id, email, category, image } = req.body;
+  const sql = `UPDATE posts SET title = ?, author_name = ?, content = ?, user_id = ?, email = ?, category = ?, image = ? WHERE id = ?`;
+  db.query(sql, [ title, author_name, content, user_id, email, category, image, postId ], (err, result) => {
     if (err) {
       console.error('Error updating post:', err);
       return res.status(500).json('Error updating the post');
