@@ -58,7 +58,7 @@ app.post('/api/posts', (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
-      res.status(201).json({ message: 'Post created successfully' });
+      res.status(200).json({ message: 'Post created successfully' });
     });
   });
 
