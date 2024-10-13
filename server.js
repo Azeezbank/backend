@@ -29,14 +29,14 @@ db.connect((err) => {
 
 
 
-// const sql = `ALTER TABLE posts ADD COLUMN image VARCHAR(255)`;
-// db.query(sql, (err, result) => {
-//   if (err) {
-//     console.error('error', err);
-//     return;
-//   }
-//   console.log('table created')
-// })
+const sql = `ALTER TABLE posts MODIFY image VARCHAR(500)`;
+db.query(sql, (err, result) => {
+  if (err) {
+    console.error('error', err);
+    return;
+  }
+  console.log('table created')
+})
 
 
 app.post('/api/register', (req, res) => {
