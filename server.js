@@ -29,10 +29,11 @@ db.connect((err) => {
 
 
 
-// const sql = `ALTER TABLE posts ADD COLUMN category VARCHAR(255)`;
+// const sql = `ALTER TABLE posts ADD COLUMN image VARCHAR(255)`;
 // db.query(sql, (err, result) => {
 //   if (err) {
-//     console.log('error')
+//     console.error('error', err);
+//     return;
 //   }
 //   console.log('table created')
 // })
@@ -49,11 +50,11 @@ app.post('/api/register', (req, res) => {
 });
 
 app.post('/api/posts', (req, res) => {
-    const { title, author_name, content, user_id, email, category } = req.body;
+    const { title, author_name, content, user_id, email, category, image } = req.body;
   
-     const query = 'INSERT INTO posts(title, author_name, content, user_id, email, category) VALUES (?, ?, ?, ?, ?, ?)';
+     const query = 'INSERT INTO posts(title, author_name, content, user_id, email, category, image) VALUES (?, ?, ?, ?, ?, ?)';
   
-    db.query(query, [title, author_name, content, user_id, email, category ], (err, result) => {
+    db.query(query, [title, author_name, content, user_id, email, category, image ], (err, result) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
