@@ -106,9 +106,24 @@ app.get('/api/posts/:id', (req, res) => {
   });
 });
 
-
+// recipts category
 app.get('/api/recipes', (req, res) => {
   const category = 'Recipes & Cooking Tips';  // This can be dynamic if needed
+  const sql = 'SELECT * FROM posts WHERE category = ?';
+
+  db.query(sql, [category], (err, result) => {
+    if (err) {
+      console.error('Error fetching posts:', err);
+      return res.status(500).json({ error: 'Server error' });
+    }
+    console.log('Posts selected successfully');
+    res.json(result);
+  });
+});
+
+//Health category
+app.get('/api/health', (req, res) => {
+  const category = 'Healthy Eating';  // This can be dynamic if needed
   const sql = 'SELECT * FROM posts WHERE category = ?';
 
   db.query(sql, [category], (err, result) => {
