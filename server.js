@@ -14,7 +14,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -22,10 +22,10 @@ const db = mysql.createConnection({
     //PORT: process.env.PORT
 });
 
-db.connect((err) => {
-    if (err) throw err;
-    console.log('Database connected')
-});
+// db.connect((err) => {
+//     if (err) throw err;
+//     console.log('Database connected')
+// });
 
 
 
@@ -129,10 +129,6 @@ app.post('/api/login', (req, res) => {
         res.json({message: "Login successful", username: result[0].username});
     });
 });
-
-
-
-
 
 
 app.put('/api/edit/:id', (req, res) => {
