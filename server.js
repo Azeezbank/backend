@@ -25,21 +25,22 @@ const db = mysql.createPool({
     //PORT: process.env.PORT
 });
 
-// db.connect((err) => {
-//     if (err) throw err;
-//     console.log('Database connected')
+
+
+
+//Create user table
+// db.execute(`CREATE TABLE IF NOT EXISTS users(id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(100), gmail VARCHAR(100), password VARCHAR(500))`, (err, result) => {
+//   if (err) throw err;
+//   console.log('user table created')
 // });
 
 
+//Create posts table
+// db.execute(`CREATE TABLE IF NOT EXISTS posts(id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(225), author_name VARCHAR(255), content TEXT, user_id INT, email VARCHAR(255), category VARCHAR(255), image TEXT)`, (err, result) => {
+//     if (err) throw err;
+//     console.log('post table created')
+//   });
 
-// const sql = `ALTER TABLE posts MODIFY image VARCHAR(500)`;
-// db.query(sql, (err, result) => {
-//   if (err) {
-//     console.error('error', err);
-//     return;
-//   }
-//   console.log('table created')
-// })
 
 
 app.post('/api/register', (req, res) => {
