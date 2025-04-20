@@ -41,12 +41,28 @@ const db = mysql.createPool({
 //     console.log('post table created')
 //   });
 
+// Create table for currency converter app comment submission
+// const sql = `CREATE TABLE IF NOT EXISTS currency(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), gmail VARCHAR(300), comment TEXT)`;
+// db.execute(sql, (err, res) => {
+//   if (err) throw err;
+//   console.log('Comment table created');
+// });
 
+app.post('/api/v1/sumbmit-comment', (req, res) => {
+  const { name, gmail, comment } = req.body;
+  const sql = `INSERT INTO currency(name, gmail, comment) VALUES (?, ?, ?)`;
+  db.execute(sql, [name, gmail, comment], (err, result) => {
+    if (err) {
+      return res.status(500).json({message: 'Error submitting comment'})
+    }
+    res.status(200).json({message: 'Comment submitted successfully'})
+  });
+});
 
 app.post('/api/register', (req, res) => {
     const { username, gmail, password } = req.body;
 
-    sql = `INSERT INTO users(username, gmail, password) VALUES (?, ?, ?)`;
+   const sql = `INSERT INTO users(username, gmail, password) VALUES (?, ?, ?)`;
     db.query(sql, [username, gmail, password], (err, result) => {
         if (err) throw err;
         res.status(201).send('User added successfully');
